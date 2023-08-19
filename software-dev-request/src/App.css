@@ -1,18 +1,31 @@
+/* App.css */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: black; /* Set the background color of the entire page */
+  color: white; /* Set the text color */
+}
+
 .App {
+  text-align: center;
+  min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  background-color: #f2f2f2;
 }
 
 .form-container {
-  background-color: #ffffff;
+  background-color: white; /* Set the background color of the form container */
+  padding: 20px;
   border-radius: 8px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  padding: 30px;
-  width: 350px;
-  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  color: black; /* Set the text color inside the form */
+  width: 40%; /* Set the width of the form container to 2/3 of the original width */
+  max-width: 450px; /* Set a maximum width if needed */
+  margin: 0 auto; /* Center the form horizontally */
 }
 
 .app-title {
@@ -43,6 +56,17 @@
   margin-top: 10px;
 }
 
+.total-cost {
+  margin-top: 20px; /* Add some spacing between sections */
+  text-align: center;
+  font-size: 18px;
+}
+
+.cost {
+  font-size: 24px; /* Increase the font size for the total cost */
+  font-weight: bold;
+}
+
 .purchase-button {
   background-color: #007bff;
   color: #fff;
@@ -57,7 +81,7 @@
   background-color: #0056b3;
 }
 
-..popup {
+.popup {
   display: none;
   position: absolute;
   background-color: #f44336;
