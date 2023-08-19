@@ -62,7 +62,7 @@ const App = () => {
     <div className="App">
       <Snowfall snowflakeCount={100} snowflakeSize={[5, 10]} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
       <div className="form-container">
-        <h1 className="app-title">Code Review App</h1>
+        <h1 className="app-title">Software Dev Request</h1>
         <form onSubmit={handleSubmit}>
           <div className="services-container">
             <h2>Select Services:</h2>
