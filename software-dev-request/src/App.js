@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import Snowfall from 'react-snowfall'; // Import the snowfall component
 import './App.css';
 
 const App = () => {
-  const [services, setServices] = useState([
+  const [services] = useState([
     { name: 'Code Review', price: 100 },
     { name: 'Coding', price: 300 },
     { name: 'Pull Request', price: 500 },
@@ -43,6 +44,9 @@ const App = () => {
 
   return (
     <div className="App">
+      <Snowfall snowflakeCount={100} // Customize snowflake count
+                snowflakeSize={[5, 10]} // Customize snowflake size range
+                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
       <div className="form-container">
         <h1 className="app-title">Code Review App</h1>
         <form onSubmit={handleSubmit}>
