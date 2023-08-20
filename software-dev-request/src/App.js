@@ -15,26 +15,6 @@ const App = () => {
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  // Load saved data from local storage
-  useEffect(() => {
-    const savedData = JSON.parse(localStorage.getItem('savedData'));
-    if (savedData) {
-      setSelectedServices(savedData.selectedServices);
-      setGitUrl(savedData.gitUrl);
-      setDescription(savedData.description);
-    }
-  }, []);
-
-  // Save form data to local storage
-  useEffect(() => {
-    const dataToSave = {
-      selectedServices,
-      gitUrl,
-      description,
-    };
-    localStorage.setItem('savedData', JSON.stringify(dataToSave));
-  }, [selectedServices, gitUrl, description]);
-
   const handleServiceChange = (serviceName) => {
     setSelectedServices((prevServices) => {
       if (prevServices.includes(serviceName)) {
