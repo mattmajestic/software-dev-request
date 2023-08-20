@@ -1,1 +1,12 @@
-[]
+[
+    {
+      "gitUrl": "https://github.com/user/repo",
+      "selectedServices": ["Code Review", "Pull Request"],
+      "description": "Fixing bugs"
+    },
+    {
+      "gitUrl": "https://github.com/user/another-repo",
+      "selectedServices": ["Coding"],
+      "description": "Adding new feature"
+    }
+  ]

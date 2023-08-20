@@ -11,23 +11,23 @@ app.use(cors());
 
 app.use(express.json());
 
-// Route to save data to the JSON file
-app.post('/save-data', async (req, res) => {
-  try {
-    const existingData = await readData();
-    const newData = {
-      ...existingData,
-      data: req.body,
-    };
-
-    await saveData(newData);
-
-    res.status(200).json({ message: 'Data saved successfully' });
-  } catch (error) {
-    console.error('Error saving data:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
+app.post('/save-data', (req, res) => {
+    try {
+      const dataFilePath = path.join(__dirname, 'data.json');
+      const currentData = JSON.parse(fs.readFileSync(dataFilePath, 'utf-8'));
+  
+      const newData = req.body;
+      currentData.push(newData);
+  
+      fs.writeFileSync(dataFilePath, JSON.stringify(currentData, null, 2));
+      
+      res.status(200).json({ message: 'Data saved successfully' });
+    } catch (error) {
+      console.error('Error saving data:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+  
 
 // Route to retrieve data from the JSON file
 app.get('/get-data', async (req, res) => {
