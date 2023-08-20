@@ -51,15 +51,15 @@ const App = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!gitUrl.trim()) {
       setError(true);
       return;
     } else {
       setError(false);
-      setSuccess(true); // Set success message
+      setSuccess(false); // Reset success message
     }
-
+  
     try {
       const response = await fetch('https://software-dev-request-server.vercel.app/save-data', {
         method: 'POST',
@@ -72,9 +72,10 @@ const App = () => {
           description,
         }),
       });
-
+  
       if (response.ok) {
         console.log('Data saved successfully');
+        setSuccess(true); // Set success message
       } else {
         console.error('Failed to save data');
       }
@@ -82,7 +83,7 @@ const App = () => {
       console.error('Error saving data:', error);
     }
   };
-
+  
   return (
     <div className="App">
       <Snowfall snowflakeCount={100} snowflakeSize={[5, 10]} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
