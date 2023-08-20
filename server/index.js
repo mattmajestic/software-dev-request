@@ -18,7 +18,7 @@ app.post('/save-data', (req, res) => {
       const newData = req.body;
       currentData.push(newData);
   
-      fs.writeFileSync('data.json', JSON.stringify(currentData, null, 2));
+      fs.writeFileSync(dataFilePath, JSON.stringify(currentData, null, 2));
       
       res.status(200).json({ message: 'Data saved successfully' });
     } catch (error) {
