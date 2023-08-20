@@ -1,42 +1,58 @@
 const express = require('express');
-const cors = require('cors');
 const fs = require('fs').promises;
+const path = require('path');
 
 const app = express();
-const port = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3001;
+const dataFilePath = path.join(__dirname, 'data.json');
 
 app.use(express.json());
-app.use(cors());
 
-// Store data in-memory for simplicity (replace with a database in production)
-let storedData = [];
-
+// Route to save data to the JSON file
 app.post('/save-data', async (req, res) => {
-  const newData = req.body;
-  storedData.push(newData);
-
-  // Save data to a JSON file (you can replace this with a database)
   try {
-    await fs.writeFile('data.json', JSON.stringify(storedData, null, 2));
-    console.log('Data saved successfully');
+    const existingData = await readData();
+    const newData = {
+      ...existingData,
+      data: req.body,
+    };
+
+    await saveData(newData);
+
     res.status(200).json({ message: 'Data saved successfully' });
   } catch (error) {
     console.error('Error saving data:', error);
-    res.status(500).json({ error: 'Failed to save data' });
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
+// Route to retrieve data from the JSON file
 app.get('/get-data', async (req, res) => {
   try {
-    const data = await fs.readFile('data.json', 'utf-8');
-    const parsedData = JSON.parse(data);
-    res.status(200).json(parsedData);
+    const data = await readData();
+    res.status(200).json(data.data || {});
   } catch (error) {
-    console.error('Error retrieving data:', error);
-    res.status(500).json({ error: 'Failed to retrieve data' });
+    console.error('Error reading data:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+async function readData() {
+  try {
+    const data = await fs.readFile(dataFilePath, 'utf-8');
+    return JSON.parse(data);
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      return { data: {} };
+    }
+    throw error;
+  }
+}
+
+async function saveData(data) {
+  await fs.writeFile(dataFilePath, JSON.stringify(data, null, 2));
+}
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
