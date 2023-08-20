@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import Snowfall from 'react-snowfall';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 const App = () => {
@@ -15,6 +14,26 @@ const App = () => {
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
 
+  // Load saved data from local storage
+  useEffect(() => {
+    const savedData = JSON.parse(localStorage.getItem('savedData'));
+    if (savedData) {
+      setSelectedServices(savedData.selectedServices);
+      setGitUrl(savedData.gitUrl);
+      setDescription(savedData.description);
+    }
+  }, []);
+
+  // Save form data to local storage
+  useEffect(() => {
+    const dataToSave = {
+      selectedServices,
+      gitUrl,
+      description,
+    };
+    localStorage.setItem('savedData', JSON.stringify(dataToSave));
+  }, [selectedServices, gitUrl, description]);
+
   const handleServiceChange = (serviceName) => {
     setSelectedServices((prevServices) => {
       if (prevServices.includes(serviceName)) {
@@ -24,18 +43,12 @@ const App = () => {
     });
   };
 
-  const handleGitUrlChange = (url) => {
-    setGitUrl(url);
-    setError(false);
-    setSuccess(false); // Clear success message when Git URL changes
-  };
-
   const totalCost = selectedServices.reduce((total, serviceName) => {
     const service = servicesData.find((s) => s.name === serviceName);
     return total + (service ? service.price : 0);
   }, 0);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!gitUrl.trim()) {
@@ -46,21 +59,11 @@ const App = () => {
       setSuccess(true); // Set success message
     }
 
-    const dataToStore = {
-      gitUrl: gitUrl,
-      selectedServices: selectedServices,
-      description: description,
-    };
-
-    console.log('Data to store:', dataToStore);
-    // You can send dataToStore to a server, save it to a file, or use any desired storage mechanism
-
-    // Add logic for payment processing here
+    // Rest of your handleSubmit logic
   };
 
   return (
     <div className="App">
-      <Snowfall snowflakeCount={100} snowflakeSize={[5, 10]} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
       <div className="form-container">
         <h1 className="app-title">Software Dev Request</h1>
         <form onSubmit={handleSubmit}>
@@ -85,7 +88,7 @@ const App = () => {
               type="text"
               className="git-input"
               value={gitUrl}
-              onChange={(e) => handleGitUrlChange(e.target.value)}
+              onChange={(e) => setGitUrl(e.target.value)}
             />
             {error && (
               <p className="error-message">Git URL is required</p>
