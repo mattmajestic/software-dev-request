@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Snowfall from 'react-snowfall';
 import './App.css';
 
 const App = () => {
@@ -59,11 +60,32 @@ const App = () => {
       setSuccess(true); // Set success message
     }
 
-    // Rest of your handleSubmit logic
+    try {
+      const response = await fetch('https://software-dev-request-server.vercel.app/save-data', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          selectedServices,
+          gitUrl,
+          description,
+        }),
+      });
+
+      if (response.ok) {
+        console.log('Data saved successfully');
+      } else {
+        console.error('Failed to save data');
+      }
+    } catch (error) {
+      console.error('Error saving data:', error);
+    }
   };
 
   return (
     <div className="App">
+      <Snowfall snowflakeCount={100} snowflakeSize={[5, 10]} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
       <div className="form-container">
         <h1 className="app-title">Software Dev Request</h1>
         <form onSubmit={handleSubmit}>
