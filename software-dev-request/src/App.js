@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Snowfall from 'react-snowfall';
+import Web3 from 'web3';
 import './App.css';
 
 const App = () => {
@@ -83,6 +84,19 @@ const App = () => {
     }
   };
 
+  const connectToMetaMask = async () => {
+    if (window.ethereum) {
+      try {
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        console.log('Connected to MetaMask');
+      } catch (error) {
+        console.error('Error connecting to MetaMask:', error);
+      }
+    } else {
+      console.error('MetaMask not found');
+    }
+  };
+
   return (
     <div className="App">
       <Snowfall snowflakeCount={100} snowflakeSize={[5, 10]} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
@@ -129,6 +143,7 @@ const App = () => {
             <h2>Total Cost:</h2>
             <p className="cost">${totalCost}</p>
           </div>
+          <button onClick={connectToMetaMask}>Connect to MetaMask</button>
           <button type="submit" className="purchase-button">
             Purchase
           </button>
