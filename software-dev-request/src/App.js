@@ -64,6 +64,19 @@ const App = () => {
       console.error('Error saving data:', error);
     }
   };
+
+  const connectToMetaMask = async () => {
+    if (window.ethereum) {
+      try {
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        console.log('Connected to MetaMask');
+      } catch (error) {
+        console.error('Error connecting to MetaMask:', error);
+      }
+    } else {
+      console.error('MetaMask not found');
+    }
+  };
   
   return (
     <div className="App">
