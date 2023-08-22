@@ -64,24 +64,7 @@ const App = () => {
       console.error('Error saving data:', error);
     }
   };
-<<<<<<< HEAD
-
-  const connectToMetaMask = async () => {
-    if (window.ethereum) {
-      try {
-        await window.ethereum.request({ method: 'eth_requestAccounts' });
-        console.log('Connected to MetaMask');
-      } catch (error) {
-        console.error('Error connecting to MetaMask:', error);
-      }
-    } else {
-      console.error('MetaMask not found');
-    }
-  };
-
-=======
   
->>>>>>> cb3171c9dcf70bfb3f6bc61661750b2f46134d04
   return (
     <div className="App">
       <Snowfall snowflakeCount={100} snowflakeSize={[5, 10]} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
