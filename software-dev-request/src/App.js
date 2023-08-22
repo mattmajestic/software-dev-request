@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import Snowfall from 'react-snowfall';
+import MetaMaskConnect from './components/metamask';
+import GitHubUser from './components/github_user';
 import './App.css';
 
 const App = () => {
@@ -14,7 +16,6 @@ const App = () => {
   const [description, setDescription] = useState('');
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [connectedAddress, setConnectedAddress] = useState('');
 
   const handleServiceChange = (serviceName) => {
     setSelectedServices((prevServices) => {
@@ -64,21 +65,6 @@ const App = () => {
       console.error('Error saving data:', error);
     }
   };
-
-  const connectToMetaMask = async () => {
-    if (window.ethereum) {
-      try {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        const address = accounts[0];
-        setConnectedAddress(address);
-        console.log('Connected to MetaMask');
-      } catch (error) {
-        console.error('Error connecting to MetaMask:', error);
-      }
-    } else {
-      console.error('MetaMask not found');
-    }
-  };
   
   return (
     <div className="App">
@@ -126,11 +112,11 @@ const App = () => {
             <h2>Total Cost:</h2>
             <p className="cost">${totalCost}</p>
           </div>
-          <button className="connect-button" onClick={connectToMetaMask}>Connect to MetaMask</button>
-          {connectedAddress && (<p>Connected Account Address: {connectedAddress}</p>)}
           <button type="submit" className="purchase-button">
             Purchase
           </button>
+          <MetaMaskConnect />
+          <GitHubUser accessToken={process.env.REACT_APP_GITHUB_TOKEN} />
           {success && (
             <p className="success-message">
               <span className="highlight">Success!</span> You have purchased the following checkboxes for ${totalCost} dollars:
