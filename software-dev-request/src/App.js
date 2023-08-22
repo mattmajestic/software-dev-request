@@ -16,26 +16,6 @@ const App = () => {
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  // Load saved data from local storage
-  useEffect(() => {
-    const savedData = JSON.parse(localStorage.getItem('savedData'));
-    if (savedData) {
-      setSelectedServices(savedData.selectedServices);
-      setGitUrl(savedData.gitUrl);
-      setDescription(savedData.description);
-    }
-  }, []);
-
-  // Save form data to local storage
-  useEffect(() => {
-    const dataToSave = {
-      selectedServices,
-      gitUrl,
-      description,
-    };
-    localStorage.setItem('savedData', JSON.stringify(dataToSave));
-  }, [selectedServices, gitUrl, description]);
-
   const handleServiceChange = (serviceName) => {
     setSelectedServices((prevServices) => {
       if (prevServices.includes(serviceName)) {
@@ -52,15 +32,15 @@ const App = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!gitUrl.trim()) {
       setError(true);
       return;
     } else {
       setError(false);
-      setSuccess(true); // Set success message
+      setSuccess(false); // Reset success message
     }
-
+  
     try {
       const response = await fetch('https://software-dev-request-server.vercel.app/save-data', {
         method: 'POST',
@@ -73,9 +53,10 @@ const App = () => {
           description,
         }),
       });
-
+  
       if (response.ok) {
         console.log('Data saved successfully');
+        setSuccess(true); // Set success message
       } else {
         console.error('Failed to save data');
       }
@@ -83,6 +64,7 @@ const App = () => {
       console.error('Error saving data:', error);
     }
   };
+<<<<<<< HEAD
 
   const connectToMetaMask = async () => {
     if (window.ethereum) {
@@ -97,6 +79,9 @@ const App = () => {
     }
   };
 
+=======
+  
+>>>>>>> cb3171c9dcf70bfb3f6bc61661750b2f46134d04
   return (
     <div className="App">
       <Snowfall snowflakeCount={100} snowflakeSize={[5, 10]} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
