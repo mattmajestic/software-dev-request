@@ -124,7 +124,7 @@ const App = () => {
             <h2>Total Cost:</h2>
             <p className="cost">${totalCost}</p>
           </div>
-          <button onClick={connectToMetaMask}>Connect to MetaMask</button>
+          <button className="connect-button" onClick={connectToMetaMask}>Connect to MetaMask</button>
           <button type="submit" className="purchase-button">
             Purchase
           </button>
