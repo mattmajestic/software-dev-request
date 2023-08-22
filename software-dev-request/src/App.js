@@ -14,6 +14,7 @@ const App = () => {
   const [description, setDescription] = useState('');
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [connectedAddress, setConnectedAddress] = useState('');
 
   const handleServiceChange = (serviceName) => {
     setSelectedServices((prevServices) => {
@@ -67,7 +68,9 @@ const App = () => {
   const connectToMetaMask = async () => {
     if (window.ethereum) {
       try {
-        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const address = accounts[0];
+        setConnectedAddress(address);
         console.log('Connected to MetaMask');
       } catch (error) {
         console.error('Error connecting to MetaMask:', error);
@@ -124,6 +127,7 @@ const App = () => {
             <p className="cost">${totalCost}</p>
           </div>
           <button className="connect-button" onClick={connectToMetaMask}>Connect to MetaMask</button>
+          {connectedAddress && (<p>Connected Account Address: {connectedAddress}</p>)}
           <button type="submit" className="purchase-button">
             Purchase
           </button>
