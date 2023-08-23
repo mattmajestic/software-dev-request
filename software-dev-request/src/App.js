@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Snowfall from 'react-snowfall';
 import MetaMaskConnect from './components/metamask';
 import GitHubUser from './components/github_user';
+import GitHubInput from './components/github_input';
 import './App.css';
 
 const App = () => {
@@ -16,6 +17,12 @@ const App = () => {
   const [description, setDescription] = useState('');
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [accessToken, setAccessToken] = useState(process.env.REACT_APP_GITHUB_TOKEN);
+  const [repoUrl, setRepoUrl] = useState('');
+
+  const handleUrlSubmit = (url) => {
+    setRepoUrl(url);
+  };
 
   const handleServiceChange = (serviceName) => {
     setSelectedServices((prevServices) => {
@@ -88,16 +95,7 @@ const App = () => {
             ))}
           </div>
           <div>
-            <h2>Git URL:</h2>
-            <input
-              type="text"
-              className="git-input"
-              value={gitUrl}
-              onChange={(e) => setGitUrl(e.target.value)}
-            />
-            {error && (
-              <p className="error-message">Git URL is required</p>
-            )}
+          <GitHubInput onUrlSubmit={handleUrlSubmit} />{repoUrl && <GitHubUser accessToken={process.env.REACT_APP_GITHUB_TOKEN} repoUrl={repoUrl} />}
           </div>
           <div>
             <h2>Description:</h2>
