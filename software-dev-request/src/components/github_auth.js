@@ -1,20 +1,30 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
+import { Auth } from '@supabase/auth-ui-react';
+import { ThemeSupa } from '@supabase/auth-ui-shared';
 
 const supabase = createClient('https://rjmgkgtoruefbqqohelw.supabase.co', process.env.REACT_APP_SUPABASE);
 
-const GitHubAuth = () => {
-  const handleGitHubLogin = async () => {
-    const { error } = await supabase.auth.signIn({ provider: 'github' });
+export default function GitHubAuth() {
+  const [session, setSession] = useState(null);
 
-    if (error) {
-      console.error('GitHub authentication error:', error);
-    }
-  };
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
 
-  return (
-    <button onClick={handleGitHubLogin}>Login with GitHub</button>
-  );
-};
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
 
-export default GitHubAuth;
+    return () => subscription.unsubscribe();
+  }, []);
+
+  if (!session) {
+    return <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} />;
+  } else {
+    return <div>Logged in!</div>;
+  }
+}
