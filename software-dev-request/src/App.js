@@ -3,6 +3,7 @@ import Snowfall from 'react-snowfall';
 import MetaMaskConnect from './components/metamask';
 import GitHubUser from './components/github_user';
 import GitHubInput from './components/github_input';
+import GitHubAuth from './components/github_auth';
 import PurchaseComponent from './components/purchase_button';
 import './App.css';
 
@@ -97,6 +98,7 @@ const App = () => {
           </div>
           <div>
           <GitHubInput onUrlSubmit={handleUrlSubmit} />{repoUrl && <GitHubUser accessToken={process.env.REACT_APP_GITHUB_TOKEN} repoUrl={repoUrl} />}
+          <GitHubAuth />
           </div>
           <div>
             <h2>Description:</h2>

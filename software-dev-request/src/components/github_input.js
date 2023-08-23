@@ -22,7 +22,6 @@ const GitHubInput = ({ onUrlSubmit }) => {
           onChange={handleUrlChange}
           placeholder="mattmajestic/software-dev-request"
         />
-        <button type="submit">Fetch User Data</button>
       </form>
     </div>
   );
