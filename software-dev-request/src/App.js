@@ -3,6 +3,7 @@ import Snowfall from 'react-snowfall';
 import MetaMaskConnect from './components/metamask';
 import GitHubUser from './components/github_user';
 import GitHubInput from './components/github_input';
+import PurchaseComponent from './components/purchase_button';
 import './App.css';
 
 const App = () => {
@@ -13,11 +14,11 @@ const App = () => {
   ];
 
   const [selectedServices, setSelectedServices] = useState([]);
-  const [gitUrl, setGitUrl] = useState('');
+  const [gitUrl] = useState('');
   const [description, setDescription] = useState('');
-  const [error, setError] = useState(false);
+  const [ setError] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [accessToken, setAccessToken] = useState(process.env.REACT_APP_GITHUB_TOKEN);
+  //const [accessToken, setAccessToken] = useState(process.env.REACT_APP_GITHUB_TOKEN);
   const [repoUrl, setRepoUrl] = useState('');
 
   const handleUrlSubmit = (url) => {
@@ -114,6 +115,7 @@ const App = () => {
             Purchase
           </button>
           <MetaMaskConnect />
+          <PurchaseComponent selectedServices={selectedServices}gitUrl={gitUrl}description={description}/>
           <GitHubUser accessToken={process.env.REACT_APP_GITHUB_TOKEN} />
           {success && (
             <p className="success-message">
