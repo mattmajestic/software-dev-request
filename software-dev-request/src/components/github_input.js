@@ -20,7 +20,7 @@ const GitHubInput = ({ onUrlSubmit }) => {
           type="text"
           value={repoUrl}
           onChange={handleUrlChange}
-          placeholder="https://github.com/owner/repo"
+          placeholder="mattmajestic/software-dev-request"
         />
         <button type="submit">Fetch User Data</button>
       </form>
