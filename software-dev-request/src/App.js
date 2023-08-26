@@ -62,6 +62,7 @@ const App = () => {
           {/* Description input */}
           <PurchaseComponent
             selectedServices={selectedServices}
+            totalCost={totalCost}
             onSuccess={handlePurchaseSuccess}
           />
           {success && (
