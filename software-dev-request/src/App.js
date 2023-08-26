@@ -60,11 +60,7 @@ const App = () => {
           </div>
           <GitHubInput />
           {/* Description input */}
-          <PurchaseComponent
-            selectedServices={selectedServices}
-            totalCost={totalCost}
-            onSuccess={handlePurchaseSuccess}
-          />
+          
           {success && (
             <p className="success-message">
               {/* Success message */}
@@ -74,6 +70,11 @@ const App = () => {
             <h2>Total Cost:</h2>
             <p className="cost">${totalCost}</p>
           </div>
+          <PurchaseComponent
+            selectedServices={selectedServices}
+            totalCost={totalCost}
+            onSuccess={handlePurchaseSuccess}
+          />
           <MetaMaskConnect />
         </form>
       </div>
