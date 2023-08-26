@@ -28,6 +28,10 @@ const App = () => {
     // Handle form submission here
   };
 
+  const handlePurchaseSuccess = () => {
+    setSuccess(true);
+  };
+
   return (
     <div className="App">
       <Snowfall snowflakeCount={100} snowflakeSize={[5, 10]} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
@@ -51,19 +55,15 @@ const App = () => {
           </div>
           <GitHubInput />
           {/* Description input */}
-          {/* Total cost */}
           <PurchaseComponent
             selectedServices={selectedServices}
-            onSuccess={() => setSuccess(true)}
+            onSuccess={handlePurchaseSuccess}
           />
           {success && (
             <p className="success-message">
               {/* Success message */}
             </p>
           )}
-          <button type="submit" className="purchase-button">
-            Purchase
-          </button>
           <MetaMaskConnect />
         </form>
       </div>
