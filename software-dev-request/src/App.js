@@ -32,6 +32,11 @@ const App = () => {
     setSuccess(true);
   };
 
+  const totalCost = selectedServices.reduce((total, serviceName) => {
+    const service = servicesData.find((s) => s.name === serviceName);
+    return total + (service ? service.price : 0);
+  }, 0);
+
   return (
     <div className="App">
       <Snowfall snowflakeCount={100} snowflakeSize={[5, 10]} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
@@ -64,6 +69,10 @@ const App = () => {
               {/* Success message */}
             </p>
           )}
+          <div className="total-cost">
+            <h2>Total Cost:</h2>
+            <p className="cost">${totalCost}</p>
+          </div>
           <MetaMaskConnect />
         </form>
       </div>
