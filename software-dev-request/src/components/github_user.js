@@ -19,10 +19,10 @@ const GitHubUser = ({ accessToken }) => {
     <div>
       {userData ? (
         <div>
-          <h2>GitHub User Information</h2>
+          <h2>GitHub Coder Information</h2>
           <p>Name: {userData.name}</p>
-          <p>Login: {userData.login}</p>
-          <p>Avatar URL: <img src={userData.avatar_url} alt="Avatar" /></p>
+          // <p>Login: {userData.login}</p>
+          // <p>Avatar URL: <img src={userData.avatar_url} alt="Avatar" /></p>
         </div>
       ) : (
         <p>{error || 'Loading GitHub user data...'}</p>

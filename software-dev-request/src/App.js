@@ -98,7 +98,6 @@ const App = () => {
           </div>
           <div>
           <GitHubInput onUrlSubmit={handleUrlSubmit} />{repoUrl && <GitHubUser accessToken={process.env.REACT_APP_GITHUB_TOKEN} repoUrl={repoUrl} />}
-          <GitHubAuth />
           </div>
           <div>
             <h2>Description:</h2>
