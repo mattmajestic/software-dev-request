@@ -1,17 +1,15 @@
 import React from 'react';
-import '../App.css';
+import Modal from 'react-modal';
 
-const PopupMessage = ({ show, onClose }) => {
+const PopupMessageModal = ({ isOpen, onClose }) => {
   return (
-    <div className={`popup ${show ? 'show' : ''}`}>
-      <div className="popup-content">
-        <p className="popup-message">Your request has been stored in the database.</p>
-        <button className="popup-close-button" onClick={onClose}>
-          Close
-        </button>
+    <Modal isOpen={isOpen} onRequestClose={onClose} contentLabel="Popup">
+      <div>
+        <p>Your request has been stored in the database.</p>
+        <button onClick={onClose}>Close</button>
       </div>
-    </div>
+    </Modal>
   );
 };
 
-export default PopupMessage;
+export default PopupMessageModal;

@@ -3,7 +3,7 @@ import Snowfall from 'react-snowfall';
 import MetaMaskConnect from './components/metamask';
 import GitHubInput from './components/github_input';
 import PurchaseComponent from './components/purchase_button';
-import PopupMessage from './components/purchase_popup';
+import PopupMessageModal  from './components/purchase_popup';
 import './App.css';
 
 const App = () => {
@@ -82,7 +82,7 @@ const App = () => {
             totalCost={totalCost}
             onSuccess={handlePurchaseSuccess}
           />
-          <PopupMessage show={showPopup} onClose={closePopup} />
+          <PopupMessageModal isOpen={showPopup} onClose={closePopup} />
           <MetaMaskConnect />
         </form>
       </div>
