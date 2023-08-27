@@ -62,7 +62,7 @@ const App = () => {
             <h2>Total Cost:</h2>
             <p className="cost">${totalCost}</p>
           </div>
-          <MetaMaskConnect />
+          <MetaMaskConnect setConnectedAccount={setConnectedAccount} /> 
           <PurchaseComponent
             selectedServices={selectedServices}
             gitUrl={gitUrl}
