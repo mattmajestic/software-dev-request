@@ -6,12 +6,12 @@ import '../App.css';
 const supabase = createClient('https://rjmgkgtoruefbqqohelw.supabase.co', process.env.REACT_APP_SUPABASE);
 
 const PurchaseComponent = ({ selectedServices, gitUrl, description, onSuccess }) => {
-  const [isPurchaseSuccess, setPurchaseSuccess] = useState(false);
+  const [isPurchaseCompleted, setPurchaseCompleted] = useState(false);
   const purchaseId = uuidv4();
 
   const handlePurchase = async () => {
     try {
-      const { error } = await supabase.from('purchases').insert([
+      const { data, error } = await supabase.from('purchases').insert([
         {
           purchase_id: purchaseId,
           selectedServices,
@@ -24,8 +24,8 @@ const PurchaseComponent = ({ selectedServices, gitUrl, description, onSuccess })
       if (error) {
         console.error('Error saving purchase:', error);
       } else {
-        console.log('Purchase saved successfully');
-        setPurchaseSuccess(true);
+        console.log('Purchase saved successfully:', data);
+        setPurchaseCompleted(true);
         onSuccess();
       }
     } catch (error) {
@@ -35,17 +35,16 @@ const PurchaseComponent = ({ selectedServices, gitUrl, description, onSuccess })
 
   return (
     <div>
-      <div className="purchase-section">
-        <button className="purchase-button" onClick={handlePurchase}>
-          <span className="purchase-icon" />
-          Purchase
-        </button>
-        {isPurchaseSuccess && (
-          <p className="success-message">
-            Your purchase has been completed with ID: {purchaseId}
-          </p>
-        )}
-      </div>
+      <button className="purchase-button" onClick={handlePurchase}>
+        <span className="purchase-icon" />
+        Purchase
+      </button>
+
+      {isPurchaseCompleted && (
+        <p className="success-message">
+          Your purchase with ID {purchaseId} has been completed.
+        </p>
+      )}
     </div>
   );
 };
