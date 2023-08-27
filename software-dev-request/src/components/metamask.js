@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEthereum } from '@fortawesome/free-brands-svg-icons'; // Use the Ethereum icon from the free-brands set
 import '../App.css'; // Import the CSS file
 
 const MetaMaskConnect = () => {
@@ -25,7 +27,7 @@ const MetaMaskConnect = () => {
       ) : (
         <div>
           <button className="connect-button" onClick={connectToMetaMask}>
-          <span className="connect-icon" />
+            <FontAwesomeIcon icon={faEthereum} className="github-icon" />
             Connect to MetaMask
           </button>
           {error && <p>{error}</p>}
