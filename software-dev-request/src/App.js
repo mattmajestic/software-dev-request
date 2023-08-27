@@ -3,6 +3,7 @@ import Snowfall from 'react-snowfall';
 import MetaMaskConnect from './components/metamask';
 import GitHubInput from './components/github_input';
 import PurchaseComponent from './components/purchase_button';
+import PopupMessage from './components/purchase_popup';
 import './App.css';
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
 
   const [selectedServices, setSelectedServices] = useState([]);
   const [success, setSuccess] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
 
   const toggleService = (serviceName) => {
     setSelectedServices((prevServices) =>
@@ -30,6 +32,11 @@ const App = () => {
 
   const handlePurchaseSuccess = () => {
     setSuccess(true);
+    setShowPopup(true);
+  };
+
+  const closePopup = () => {
+    setShowPopup(false);
   };
 
   const totalCost = selectedServices.reduce((total, serviceName) => {
@@ -75,6 +82,7 @@ const App = () => {
             totalCost={totalCost}
             onSuccess={handlePurchaseSuccess}
           />
+          <PopupMessage show={showPopup} onClose={closePopup} />
           <MetaMaskConnect />
         </form>
       </div>
