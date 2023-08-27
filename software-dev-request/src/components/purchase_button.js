@@ -1,32 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { createClient } from '@supabase/supabase-js';
-import { v4 as uuidv4 } from 'uuid'; // Import UUID library
-import '../App.css';
+import '../App.css'; // Import the CSS file
 
 const supabase = createClient('https://rjmgkgtoruefbqqohelw.supabase.co', process.env.REACT_APP_SUPABASE);
 
-const PurchaseComponent = ({ selectedServices, gitUrl, description, onSuccess }) => {
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [purchaseId, setPurchaseId] = useState(null);
-
-  const servicesData = [
-    { name: 'Code Review', price: 100 },
-    { name: 'Coding', price: 300 },
-    { name: 'Pull Request', price: 500 },
-  ];
-
-  const totalCost = selectedServices.reduce((total, serviceName) => {
-    const service = servicesData.find((s) => s.name === serviceName);
-    return total + (service ? service.price : 0);
-  }, 0);
-
+const PurchaseComponent = ({ selectedServices, account, gitUrl, description, onSuccess }) => {
   const handlePurchase = async () => {
     try {
-      const uniqueId = uuidv4();
       const { data, error } = await supabase.from('purchases').insert([
         {
-          purchase_id: uniqueId,
           selectedServices,
+          account, // Include the connected wallet address
           gitUrl,
           description,
           timestamp: new Date().toISOString(),
@@ -37,9 +21,7 @@ const PurchaseComponent = ({ selectedServices, gitUrl, description, onSuccess })
         console.error('Error saving purchase:', error);
       } else {
         console.log('Purchase saved successfully:', data);
-        setPurchaseId(uniqueId);
-        setShowSuccessMessage(true);
-        onSuccess();
+        onSuccess(); // Call the success handler
       }
     } catch (error) {
       console.error('Error saving purchase:', error);
@@ -51,13 +33,6 @@ const PurchaseComponent = ({ selectedServices, gitUrl, description, onSuccess })
       <button className="purchase-button" onClick={handlePurchase}>
         Purchase
       </button>
-      {showSuccessMessage && (
-        <p className="success-message">
-          Your purchase has been stored in Supabase with purchase ID: {purchaseId}
-          <br />
-          Total Cost: ${totalCost}
-        </p>
-      )}
     </div>
   );
 };
