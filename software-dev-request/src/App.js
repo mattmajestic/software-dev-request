@@ -80,11 +80,7 @@ const App = () => {
             totalCost={totalCost}
             onSuccess={handlePurchaseSuccess}
           />
-          {success && (
-            <p className="success-message">
-              Your request has been sent successfully!
-            </p>
-          )}
+          {success}
           <MetaMaskConnect />
         </form>
       </div>

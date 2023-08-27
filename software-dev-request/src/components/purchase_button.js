@@ -7,6 +7,7 @@ const supabase = createClient('https://rjmgkgtoruefbqqohelw.supabase.co', proces
 
 const PurchaseComponent = ({ selectedServices, gitUrl, description, onSuccess }) => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [purchaseId, setPurchaseId] = useState(null); // Declare purchaseId state
 
   const handlePurchase = async () => {
     try {
@@ -25,6 +26,7 @@ const PurchaseComponent = ({ selectedServices, gitUrl, description, onSuccess })
         console.error('Error saving purchase:', error);
       } else {
         console.log('Purchase saved successfully:', data);
+        setPurchaseId(uniqueId); // Store the generated purchase_id
         setShowSuccessMessage(true); // Show the success message
         onSuccess(); // Call the success handler
       }
@@ -39,7 +41,9 @@ const PurchaseComponent = ({ selectedServices, gitUrl, description, onSuccess })
         Purchase
       </button>
       {showSuccessMessage && (
-        <p className="success-message">Your request has been sent successfully.</p>
+        <p className="success-message">
+          Your purchase has been stored in Supabase with purchase ID: {purchaseId}
+        </p>
       )}
     </div>
   );
