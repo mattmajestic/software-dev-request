@@ -1,60 +1,68 @@
 import React, { useState } from 'react';
+import Snowfall from 'react-snowfall';
 import MetaMaskConnect from './components/metamask';
 import GitHubInput from './components/github_input';
 import PurchaseComponent from './components/purchase_button';
 import './App.css';
 
 const App = () => {
-  const servicesData = [
-    { name: 'Code Review', price: 100 },
-    { name: 'Coding', price: 300 },
-    { name: 'Pull Request', price: 500 },
-  ];
-
   const [selectedServices, setSelectedServices] = useState([]);
   const [gitUrl, setGitUrl] = useState('');
   const [description, setDescription] = useState('');
-  const [connectedAccount, setConnectedAccount] = useState(null); // State for the connected MetaMask account
+  const [isPurchaseSuccess, setPurchaseSuccess] = useState(false);
 
-  const toggleService = (serviceName) => {
-    setSelectedServices((prevServices) =>
-      prevServices.includes(serviceName)
-        ? prevServices.filter((service) => service !== serviceName)
-        : [...prevServices, serviceName]
-    );
+  const handlePurchaseSuccess = () => {
+    setPurchaseSuccess(true);
   };
 
   return (
     <div className="App">
+      <Snowfall
+        snowflakeCount={100}
+        snowflakeSize={[5, 10]}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+        }}
+      />
       <div className="form-container">
         <h1 className="app-title">Software Dev Request</h1>
         <form>
           <div className="services-container">
             <h2>Select Services:</h2>
-            {servicesData.map((service) => (
-              <label key={service.name} className="service-label">
-                <input
-                  type="checkbox"
-                  className="service-input"
-                  value={service.name}
-                  checked={selectedServices.includes(service.name)}
-                  onChange={() => toggleService(service.name)}
-                />
-                {service.name} - ${service.price}
-              </label>
-            ))}
+            <label>
+              <input
+                type="checkbox"
+                value="Code Review"
+                checked={selectedServices.includes('Code Review')}
+                onChange={() =>
+                  setSelectedServices((prevServices) =>
+                    prevServices.includes('Code Review')
+                      ? prevServices.filter((service) => service !== 'Code Review')
+                      : [...prevServices, 'Code Review']
+                  )
+                }
+              />
+              Code Review - $100
+            </label>
+            {/* Repeat similar code for other services */}
           </div>
           <GitHubInput setGitUrl={setGitUrl} setDescription={setDescription} />
-          {/* Render your total cost component here */}
+          <MetaMaskConnect />
           <PurchaseComponent
             selectedServices={selectedServices}
             gitUrl={gitUrl}
             description={description}
+            onSuccess={handlePurchaseSuccess}
           />
-          {connectedAccount && (
-          <p>Connected Account: {connectedAccount}</p>
+          {isPurchaseSuccess && (
+            <p className="success-message">
+              Your purchase has been completed successfully!
+            </p>
           )}
-          <MetaMaskConnect setConnectedAccount={setConnectedAccount} />
         </form>
       </div>
     </div>

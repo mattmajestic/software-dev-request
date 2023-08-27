@@ -6,14 +6,15 @@ import '../App.css';
 const supabase = createClient('https://rjmgkgtoruefbqqohelw.supabase.co', process.env.REACT_APP_SUPABASE);
 
 const PurchaseComponent = ({ selectedServices, gitUrl, description, onSuccess }) => {
-  const [isPurchaseClicked, setIsPurchaseClicked] = useState(false);
-  const purchaseId = uuidv4();
+  const [isPurchaseButtonClicked, setIsPurchaseButtonClicked] = useState(false);
+  const [purchaseId, setPurchaseId] = useState('');
 
   const handlePurchase = async () => {
     try {
+      const newPurchaseId = uuidv4();
       const { data, error } = await supabase.from('purchases').insert([
         {
-          purchase_id: purchaseId,
+          purchase_id: newPurchaseId,
           selectedServices,
           gitUrl,
           description,
@@ -25,8 +26,9 @@ const PurchaseComponent = ({ selectedServices, gitUrl, description, onSuccess })
         console.error('Error saving purchase:', error);
       } else {
         console.log('Purchase saved successfully:', data);
-        setIsPurchaseClicked(true); // Set the purchase clicked state to true
-        onSuccess(); // Call the onSuccess callback to show the success message in App component
+        setIsPurchaseButtonClicked(true);
+        setPurchaseId(newPurchaseId);
+        onSuccess();
       }
     } catch (error) {
       console.error('Error saving purchase:', error);
@@ -35,13 +37,12 @@ const PurchaseComponent = ({ selectedServices, gitUrl, description, onSuccess })
 
   return (
     <div>
-      <button className="purchase-button" onClick={handlePurchase}>
+      <button className="purchase-button" onClick={handlePurchase} disabled={isPurchaseButtonClicked}>
         <span className="purchase-icon" />
         Purchase
       </button>
 
-      {/* Display the success message only if the purchase button is clicked */}
-      {isPurchaseClicked && (
+      {isPurchaseButtonClicked && (
         <p className="success-message">
           Your purchase with ID {purchaseId} has been completed.
         </p>
