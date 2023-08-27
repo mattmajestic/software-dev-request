@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEthereum } from '@fortawesome/free-brands-svg-icons';
 import '../App.css';
 
-const MetaMaskConnect = () => {
+const MetaMaskConnect = ({ setConnectedAccount }) => {
   const [account, setAccount] = useState(null);
   const [error, setError] = useState(null);
 
@@ -11,7 +11,8 @@ const MetaMaskConnect = () => {
     if (window.ethereum) {
       try {
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        setAccount(accounts[0]); // Set the connected account
+        setAccount(accounts[0]);
+        setConnectedAccount(accounts[0]); // Set the connected account in the parent component
       } catch (error) {
         setError('Error connecting to MetaMask');
       }
