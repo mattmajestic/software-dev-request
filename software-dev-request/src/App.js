@@ -13,11 +13,11 @@ const App = () => {
   ];
 
   const [selectedServices, setSelectedServices] = useState([]);
-  const [account, setAccount] = useState(null); // Connected wallet address from MetaMask
-  const [gitUrl, setGitUrl] = useState(''); // GitHub repository URL
-  const [description, setDescription] = useState(''); // Description entered by the user
+  const [gitUrl, setGitUrl] = useState(''); // Add state for gitUrl
+  const [description, setDescription] = useState(''); // Add state for description
+  const [isPurchaseSuccess, setPurchaseSuccess] = useState(false); // State for purchase success
 
-  const handleServiceToggle = (serviceName) => {
+  const toggleService = (serviceName) => {
     setSelectedServices((prevServices) =>
       prevServices.includes(serviceName)
         ? prevServices.filter((service) => service !== serviceName)
@@ -26,19 +26,17 @@ const App = () => {
   };
 
   const handlePurchaseSuccess = () => {
-    // Reset form data after successful purchase
-    setSelectedServices([]);
-    setGitUrl('');
-    setDescription('');
+    setPurchaseSuccess(true); // Set purchase success state to true
   };
+
+  const totalCost = selectedServices.reduce((total, serviceName) => {
+    const service = servicesData.find((s) => s.name === serviceName);
+    return total + (service ? service.price : 0);
+  }, 0);
 
   return (
     <div className="App">
-      <Snowfall
-        snowflakeCount={100}
-        snowflakeSize={[5, 10]}
-        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-      />
+      <Snowfall snowflakeCount={100} snowflakeSize={[5, 10]} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
       <div className="form-container">
         <h1 className="app-title">Software Dev Request</h1>
         <form>
@@ -51,37 +49,30 @@ const App = () => {
                   className="service-input"
                   value={service.name}
                   checked={selectedServices.includes(service.name)}
-                  onChange={() => handleServiceToggle(service.name)}
+                  onChange={() => toggleService(service.name)}
                 />
                 {service.name} - ${service.price}
               </label>
             ))}
           </div>
-          <GitHubInput onChangeGitUrl={setGitUrl} />
-          <div>
-            <h2>Description:</h2>
-            <textarea
-              className="description-input"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              style={{ width: '100%', height: '120px' }}
-            />
-          </div>
+          <GitHubInput setGitUrl={setGitUrl} setDescription={setDescription} />
+          {/* Description input */}
           <div className="total-cost">
             <h2>Total Cost:</h2>
-            <p className="cost">${selectedServices.reduce((total, serviceName) => {
-              const service = servicesData.find((s) => s.name === serviceName);
-              return total + (service ? service.price : 0);
-            }, 0)}</p>
+            <p className="cost">${totalCost}</p>
           </div>
           <PurchaseComponent
             selectedServices={selectedServices}
-            account={account}
             gitUrl={gitUrl}
             description={description}
             onSuccess={handlePurchaseSuccess}
           />
-          <MetaMaskConnect onAccountChange={setAccount} />
+          {isPurchaseSuccess && (
+            <p className="success-message">
+              Your purchase has been completed.
+            </p>
+          )}
+          <MetaMaskConnect />
         </form>
       </div>
     </div>
