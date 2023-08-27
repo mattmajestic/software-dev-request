@@ -69,16 +69,13 @@ const App = () => {
             <p className="cost">${totalCost}</p>
           </div>
           <PurchaseComponent
-            selectedServices={selectedServices}
-            gitUrl={gitUrl}
-            description={description}
-            onSuccess={handlePurchaseSuccess}
+          selectedServices={selectedServices}
+          gitUrl={gitUrl}
+          description={description}
+          onSuccess={handlePurchaseSuccess}
           />
-          {isPurchaseSuccess && (
-            <p className="success-message">
-              Your purchase has been completed.
-            </p>
-          )}
+          <p className={isPurchaseSuccess ? "success-message" : "hidden"}>
+          </p>
           <MetaMaskConnect />
         </form>
       </div>
