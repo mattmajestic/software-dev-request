@@ -13,8 +13,9 @@ const App = () => {
   ];
 
   const [selectedServices, setSelectedServices] = useState([]);
-  const [gitUrl, setGitUrl] = useState(''); // Add state for gitUrl
-  const [description, setDescription] = useState(''); // Add state for description
+  const [gitUrl, setGitUrl] = useState('');
+  const [description, setDescription] = useState('');
+  const [connectedAccount, setConnectedAccount] = useState(null); // State for connected account
 
   const toggleService = (serviceName) => {
     setSelectedServices((prevServices) =>
@@ -24,10 +25,8 @@ const App = () => {
     );
   };
 
-  const [isPurchaseSuccess, setPurchaseSuccess] = useState(false); // State for purchase success
-
   const handlePurchaseSuccess = () => {
-    setPurchaseSuccess(true); // Set purchase success state to true
+    // Handle purchase success if needed
   };
 
   const totalCost = selectedServices.reduce((total, serviceName) => {
@@ -69,10 +68,11 @@ const App = () => {
             description={description}
             onSuccess={handlePurchaseSuccess}
           />
-          {isPurchaseSuccess && (
-          <p className="success-message">
-          </p>
-      )}
+          {connectedAccount && (
+            <p className="connected-account">
+              Connected Account: {connectedAccount}
+            </p>
+          )}
         </form>
       </div>
     </div>
