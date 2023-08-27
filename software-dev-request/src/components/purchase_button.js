@@ -22,8 +22,8 @@ const PurchaseComponent = ({ selectedServices, totalCost, gitUrl, description, o
         console.error('Error saving purchase:', error);
       } else {
         console.log('Purchase saved successfully:', data);
-        setRequestSent(true); // Set the request sent state to true
-        onSuccess(); // Call the success handler
+        setRequestSent(true);
+        onSuccess();
       }
     } catch (error) {
       console.error('Error saving purchase:', error);
