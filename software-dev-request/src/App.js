@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Snowfall from 'react-snowfall';
 import MetaMaskConnect from './components/metamask';
-import GitHubInput from './components/github_input';
 import PurchaseComponent from './components/purchase_button';
 import './App.css';
 
@@ -13,9 +12,11 @@ const App = () => {
   ];
 
   const [selectedServices, setSelectedServices] = useState([]);
+  const [gitUrl, setGitUrl] = useState(''); // State for gitUrl
+  const [description, setDescription] = useState(''); // State for description
   const [success, setSuccess] = useState(false);
 
-  const toggleService = (serviceName) => {
+  const handleServiceChange = (serviceName) => {
     setSelectedServices((prevServices) =>
       prevServices.includes(serviceName)
         ? prevServices.filter((service) => service !== serviceName)
@@ -23,7 +24,7 @@ const App = () => {
     );
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Handle form submission here
   };
@@ -52,29 +53,38 @@ const App = () => {
                   className="service-input"
                   value={service.name}
                   checked={selectedServices.includes(service.name)}
-                  onChange={() => toggleService(service.name)}
+                  onChange={() => handleServiceChange(service.name)}
                 />
                 {service.name} - ${service.price}
               </label>
             ))}
           </div>
-          <GitHubInput />
-          {/* Description input */}
-          
-          {success && (
-            <p className="success-message">
-              {/* Success message */}
-            </p>
-          )}
-          <div className="total-cost">
-            <h2>Total Cost:</h2>
-            <p className="cost">${totalCost}</p>
-          </div>
+          <input
+            type="text"
+            className="git-input"
+            placeholder="Enter Git URL"
+            value={gitUrl}
+            onChange={(e) => setGitUrl(e.target.value)}
+          />
+          <textarea
+            className="description-input"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Enter description"
+            style={{ width: '100%', height: '120px' }}
+          />
           <PurchaseComponent
             selectedServices={selectedServices}
+            gitUrl={gitUrl}
+            description={description}
             totalCost={totalCost}
             onSuccess={handlePurchaseSuccess}
           />
+          {success && (
+            <p className="success-message">
+              Your request has been sent successfully!
+            </p>
+          )}
           <MetaMaskConnect />
         </form>
       </div>
