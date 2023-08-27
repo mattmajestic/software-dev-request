@@ -11,7 +11,7 @@ const MetaMaskConnect = () => {
     if (window.ethereum) {
       try {
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        setAccount(accounts[0]);
+        setAccount(accounts[0]); // Set the connected account
       } catch (error) {
         setError('Error connecting to MetaMask');
       }
