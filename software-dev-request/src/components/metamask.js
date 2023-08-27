@@ -27,7 +27,7 @@ const MetaMaskConnect = () => {
       ) : (
         <div>
           <button className="connect-button" onClick={connectToMetaMask}>
-            <FontAwesomeIcon icon={faEthereum} className="github-icon" />
+            <FontAwesomeIcon icon={faEthereum} className="ethereum-icon" /> {/* Use the correct class name */}
             Connect to MetaMask
           </button>
           {error && <p>{error}</p>}

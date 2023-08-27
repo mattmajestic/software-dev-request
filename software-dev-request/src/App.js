@@ -60,13 +60,13 @@ const App = () => {
             <h2>Total Cost:</h2>
             <p className="cost">${totalCost}</p>
           </div>
+          <MetaMaskConnect />
           <PurchaseComponent
             selectedServices={selectedServices}
             gitUrl={gitUrl}
             description={description}
             onSuccess={handlePurchaseSuccess}
           />
-          <MetaMaskConnect />
         </form>
       </div>
     </div>
