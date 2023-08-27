@@ -5,7 +5,7 @@ import '../App.css';
 
 const supabase = createClient('https://rjmgkgtoruefbqqohelw.supabase.co', process.env.REACT_APP_SUPABASE);
 
-const PurchaseComponent = ({ selectedServices, account, gitUrl, description, onSuccess }) => {
+const PurchaseComponent = ({ selectedServices, gitUrl, description, onSuccess }) => {
   const [isPurchaseCompleted, setPurchaseCompleted] = useState(false);
   const purchaseId = uuidv4(); // Generate a new UUID
 
@@ -15,7 +15,6 @@ const PurchaseComponent = ({ selectedServices, account, gitUrl, description, onS
         {
           purchase_id: purchaseId,
           selectedServices,
-          walletAddress: account,
           gitUrl,
           description,
           timestamp: new Date().toISOString(),
@@ -43,7 +42,7 @@ const PurchaseComponent = ({ selectedServices, account, gitUrl, description, onS
 
       {isPurchaseCompleted && (
         <p className="success-message">
-          Your purchase with ID {purchaseId} has been completed. Wallet Address: {account}
+          Your purchase with ID {purchaseId} has been completed.
         </p>
       )}
     </div>
