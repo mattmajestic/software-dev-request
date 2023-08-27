@@ -5,7 +5,7 @@ import '../App.css';
 
 const supabase = createClient('https://rjmgkgtoruefbqqohelw.supabase.co', process.env.REACT_APP_SUPABASE);
 
-const PurchaseComponent = ({ selectedServices, gitUrl, description }) => {
+const PurchaseComponent = ({ selectedServices, gitUrl, description, onSuccess }) => {
   const [isPurchaseClicked, setIsPurchaseClicked] = useState(false);
   const purchaseId = uuidv4();
 
@@ -26,6 +26,7 @@ const PurchaseComponent = ({ selectedServices, gitUrl, description }) => {
       } else {
         console.log('Purchase saved successfully:', data);
         setIsPurchaseClicked(true); // Set the purchase clicked state to true
+        onSuccess(); // Call the onSuccess callback to show the success message in App component
       }
     } catch (error) {
       console.error('Error saving purchase:', error);

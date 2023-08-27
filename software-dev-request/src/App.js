@@ -14,6 +14,7 @@ const App = () => {
   const [selectedServices, setSelectedServices] = useState([]);
   const [gitUrl, setGitUrl] = useState('');
   const [description, setDescription] = useState('');
+  const [connectedAccount, setConnectedAccount] = useState(null); // State for the connected MetaMask account
 
   const toggleService = (serviceName) => {
     setSelectedServices((prevServices) =>
@@ -50,7 +51,10 @@ const App = () => {
             gitUrl={gitUrl}
             description={description}
           />
-          <MetaMaskConnect />
+          {connectedAccount && (
+          <p>Connected Account: {connectedAccount}</p>
+          )}
+          <MetaMaskConnect setConnectedAccount={setConnectedAccount} />
         </form>
       </div>
     </div>
