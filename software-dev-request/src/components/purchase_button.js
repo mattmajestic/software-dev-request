@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
-import '../App.css'; // Import the CSS file
+import Modal from 'react-modal'; // Import the modal component
+import '../App.css';
 
 const supabase = createClient('https://rjmgkgtoruefbqqohelw.supabase.co', process.env.REACT_APP_SUPABASE);
 
-const PurchaseComponent = ({ selectedServices, totalCost, gitUrl, description, onSuccess }) => {
+const PurchaseComponent = ({ selectedServices, totalCost, gitUrl, description }) => {
+  const [showPopup, setShowPopup] = useState(false);
+
   const handlePurchase = async () => {
     try {
       const { data, error } = await supabase.from('purchases').insert([
@@ -20,7 +23,7 @@ const PurchaseComponent = ({ selectedServices, totalCost, gitUrl, description, o
         console.error('Error saving purchase:', error);
       } else {
         console.log('Purchase saved successfully:', data);
-        onSuccess(); // Call the success handler
+        setShowPopup(true); // Show the modal
       }
     } catch (error) {
       console.error('Error saving purchase:', error);
@@ -30,9 +33,24 @@ const PurchaseComponent = ({ selectedServices, totalCost, gitUrl, description, o
   return (
     <div>
       <button className="purchase-button" onClick={handlePurchase}>
-      <span className="purchase-icon" />
-        Purchase (${totalCost}) {/* Show the total cost */}
+        <span className="purchase-icon" />
+        Purchase (${totalCost})
       </button>
+      
+      <Modal
+        isOpen={showPopup}
+        onRequestClose={() => setShowPopup(false)} // Close the modal when requested
+        contentLabel="Popup Modal"
+        className="popup-modal"
+        overlayClassName="popup-overlay"
+      >
+        <div className="popup-content">
+          <p className="popup-message">Your request has been stored in the database.</p>
+          <button className="popup-close-button" onClick={() => setShowPopup(false)}>
+            Close
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 };
