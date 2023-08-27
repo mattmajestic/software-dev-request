@@ -13,9 +13,9 @@ const App = () => {
   ];
 
   const [selectedServices, setSelectedServices] = useState([]);
-  const [gitUrl, setGitUrl] = useState(''); // Add state for gitUrl
-  const [description, setDescription] = useState(''); // Add state for description
-  const [isPurchaseSuccess, setPurchaseSuccess] = useState(false); // State for purchase success
+  const [gitUrl, setGitUrl] = useState('');
+  const [description, setDescription] = useState('');
+  const [isPurchaseSuccess, setPurchaseSuccess] = useState(false);
 
   const toggleService = (serviceName) => {
     setSelectedServices((prevServices) =>
@@ -26,7 +26,7 @@ const App = () => {
   };
 
   const handlePurchaseSuccess = () => {
-    setPurchaseSuccess(true); // Set purchase success state to true
+    setPurchaseSuccess(true);
   };
 
   const totalCost = selectedServices.reduce((total, serviceName) => {
@@ -56,7 +56,14 @@ const App = () => {
             ))}
           </div>
           <GitHubInput setGitUrl={setGitUrl} setDescription={setDescription} />
-          {/* Description input */}
+          <div className="description-container">
+            <label className="description-label">Description:</label>
+            <textarea
+              className="description-input"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
           <div className="total-cost">
             <h2>Total Cost:</h2>
             <p className="cost">${totalCost}</p>

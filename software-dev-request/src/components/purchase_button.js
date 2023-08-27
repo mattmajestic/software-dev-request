@@ -35,16 +35,17 @@ const PurchaseComponent = ({ selectedServices, gitUrl, description, onSuccess })
 
   return (
     <div>
-      <button className="purchase-button" onClick={handlePurchase}>
-        <span className="purchase-icon" />
-        Purchase
-      </button>
-
-      {isPurchaseSuccess && (
-        <p className="success-message">
-          Your purchase has been completed with ID: {purchaseId}
-        </p>
-      )}
+      <div className="purchase-section">
+        <button className="purchase-button" onClick={handlePurchase}>
+          <span className="purchase-icon" />
+          Purchase
+        </button>
+        {isPurchaseSuccess && (
+          <p className="success-message">
+            Your purchase has been completed with ID: {purchaseId}
+          </p>
+        )}
+      </div>
     </div>
   );
 };
