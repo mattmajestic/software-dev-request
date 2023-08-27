@@ -143,3 +143,15 @@ body {
 .github-button:hover {
   background-color: #24292e;
 }
+
+.connect-icon::before {
+  content: "\f15b"; /* Unicode character code for FontAwesome fox icon */
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900; /* Solid style */
+  margin-right: 8px;
+}
+
+.purchase-icon::before {
+  content: "\0024"; /* Unicode character code for dollar sign */
+  margin-right: 8px;
+}

@@ -30,6 +30,7 @@ const PurchaseComponent = ({ selectedServices, totalCost, gitUrl, description, o
   return (
     <div>
       <button className="purchase-button" onClick={handlePurchase}>
+      <span className="purchase-icon" />
         Purchase (${totalCost}) {/* Show the total cost */}
       </button>
     </div>

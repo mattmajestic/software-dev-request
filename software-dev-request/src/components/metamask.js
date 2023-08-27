@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../App.css'; // Import the CSS file
 
 const MetaMaskConnect = () => {
   const [account, setAccount] = useState(null);
@@ -24,6 +25,7 @@ const MetaMaskConnect = () => {
       ) : (
         <div>
           <button className="connect-button" onClick={connectToMetaMask}>
+          <span className="connect-icon" />
             Connect to MetaMask
           </button>
           {error && <p>{error}</p>}
