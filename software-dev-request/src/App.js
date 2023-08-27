@@ -15,7 +15,8 @@ const App = () => {
   const [selectedServices, setSelectedServices] = useState([]);
   const [gitUrl, setGitUrl] = useState('');
   const [description, setDescription] = useState('');
-  const [setConnectedAccount] = useState(); // State for connected account
+  const [isPurchaseSuccess, setPurchaseSuccess] = useState(false); // State for purchase success
+  const [connectedAccount, setConnectedAccount] = useState(null); // State for connected MetaMask account
 
   const toggleService = (serviceName) => {
     setSelectedServices((prevServices) =>
@@ -26,7 +27,7 @@ const App = () => {
   };
 
   const handlePurchaseSuccess = () => {
-    // Handle purchase success if needed
+    setPurchaseSuccess(true); // Set purchase success state to true
   };
 
   const totalCost = selectedServices.reduce((total, serviceName) => {
@@ -56,7 +57,6 @@ const App = () => {
             ))}
           </div>
           <GitHubInput setGitUrl={setGitUrl} setDescription={setDescription} />
-          {/* Description input */}
           <div className="total-cost">
             <h2>Total Cost:</h2>
             <p className="cost">${totalCost}</p>
@@ -68,6 +68,12 @@ const App = () => {
             description={description}
             onSuccess={handlePurchaseSuccess}
           />
+          {isPurchaseSuccess && (
+            <p className="success-message">Your purchase has been completed.</p>
+          )}
+          {connectedAccount && (
+            <p className="connected-account">Connected Account: {connectedAccount}</p>
+          )}
         </form>
       </div>
     </div>
