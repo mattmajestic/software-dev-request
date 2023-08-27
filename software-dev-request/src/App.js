@@ -24,8 +24,10 @@ const App = () => {
     );
   };
 
+  const [isPurchaseSuccess, setPurchaseSuccess] = useState(false); // State for purchase success
+
   const handlePurchaseSuccess = () => {
-    // Handle purchase success if needed
+    setPurchaseSuccess(true); // Set purchase success state to true
   };
 
   const totalCost = selectedServices.reduce((total, serviceName) => {
@@ -67,6 +69,10 @@ const App = () => {
             description={description}
             onSuccess={handlePurchaseSuccess}
           />
+          {isPurchaseSuccess && (
+          <p className="success-message">
+          </p>
+      )}
         </form>
       </div>
     </div>
