@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEthereum } from '@fortawesome/free-brands-svg-icons';
 import '../App.css';
 
-const MetaMaskConnect = ({ setConnectedAccount }) => {
+const MetaMaskConnect = () => {
   const [account, setAccount] = useState(null);
   const [error, setError] = useState(null);
 
@@ -11,9 +11,7 @@ const MetaMaskConnect = ({ setConnectedAccount }) => {
     if (window.ethereum) {
       try {
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        const connectedAccount = accounts[0]; // Get the connected account
-        setAccount(connectedAccount);
-        setConnectedAccount(connectedAccount); // Update connected account in parent component
+        setAccount(accounts[0]); // Set the connected account
       } catch (error) {
         setError('Error connecting to MetaMask');
       }
@@ -27,14 +25,12 @@ const MetaMaskConnect = ({ setConnectedAccount }) => {
       {account ? (
         <p>Connected Account: {account}</p>
       ) : (
-        <div>
-          <button className="connect-button" onClick={connectToMetaMask}>
-            <FontAwesomeIcon icon={faEthereum} className="github-icon" />
-            Connect to MetaMask
-          </button>
-          {error && <p>{error}</p>}
-        </div>
+        <button className="connect-button" onClick={connectToMetaMask}>
+          <FontAwesomeIcon icon={faEthereum} className="github-icon" />
+          Connect to MetaMask
+        </button>
       )}
+      {error && <p>{error}</p>}
     </div>
   );
 };

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Snowfall from 'react-snowfall';
 import MetaMaskConnect from './components/metamask';
 import GitHubInput from './components/github_input';
 import PurchaseComponent from './components/purchase_button';
@@ -15,8 +14,6 @@ const App = () => {
   const [selectedServices, setSelectedServices] = useState([]);
   const [gitUrl, setGitUrl] = useState('');
   const [description, setDescription] = useState('');
-  const [isPurchaseSuccess, setPurchaseSuccess] = useState(false); // State for purchase success
-  const [connectedAccount, setConnectedAccount] = useState(null); // State for connected MetaMask account
 
   const toggleService = (serviceName) => {
     setSelectedServices((prevServices) =>
@@ -26,18 +23,8 @@ const App = () => {
     );
   };
 
-  const handlePurchaseSuccess = () => {
-    setPurchaseSuccess(true); // Set purchase success state to true
-  };
-
-  const totalCost = selectedServices.reduce((total, serviceName) => {
-    const service = servicesData.find((s) => s.name === serviceName);
-    return total + (service ? service.price : 0);
-  }, 0);
-
   return (
     <div className="App">
-      <Snowfall snowflakeCount={100} snowflakeSize={[5, 10]} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
       <div className="form-container">
         <h1 className="app-title">Software Dev Request</h1>
         <form>
@@ -57,23 +44,13 @@ const App = () => {
             ))}
           </div>
           <GitHubInput setGitUrl={setGitUrl} setDescription={setDescription} />
-          <div className="total-cost">
-            <h2>Total Cost:</h2>
-            <p className="cost">${totalCost}</p>
-          </div>
-          <MetaMaskConnect setConnectedAccount={setConnectedAccount} />
+          {/* Render your total cost component here */}
           <PurchaseComponent
             selectedServices={selectedServices}
             gitUrl={gitUrl}
             description={description}
-            onSuccess={handlePurchaseSuccess}
           />
-          {isPurchaseSuccess && (
-            <p className="success-message">Your purchase has been completed.</p>
-          )}
-          {connectedAccount && (
-            <p className="connected-account">Connected Account: {connectedAccount}</p>
-          )}
+          <MetaMaskConnect />
         </form>
       </div>
     </div>
