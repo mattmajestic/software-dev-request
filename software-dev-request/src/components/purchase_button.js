@@ -5,7 +5,7 @@ import '../App.css';
 
 const supabase = createClient('https://rjmgkgtoruefbqqohelw.supabase.co', process.env.REACT_APP_SUPABASE);
 
-const PurchaseComponent = ({ selectedServices, totalCost, gitUrl, description }) => {
+const PurchaseComponent = ({ selectedServices, totalCost, gitUrl, description, onSuccess }) => {
   const [showPopup, setShowPopup] = useState(false);
 
   const handlePurchase = async () => {

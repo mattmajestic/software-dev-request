@@ -15,6 +15,9 @@ const App = () => {
   const [selectedServices, setSelectedServices] = useState([]);
   const [success, setSuccess] = useState(false);
 
+  const gitUrl = "your_git_repo"; // Define gitUrl here
+  const description = "update_with_your_code_request"; 
+
   const toggleService = (serviceName) => {
     setSelectedServices((prevServices) =>
       prevServices.includes(serviceName)
@@ -73,6 +76,8 @@ const App = () => {
           <PurchaseComponent
             selectedServices={selectedServices}
             totalCost={totalCost}
+            gitUrl={gitUrl}
+            description={description} // Pass description as a prop
             onSuccess={handlePurchaseSuccess}
           />
           <MetaMaskConnect />
