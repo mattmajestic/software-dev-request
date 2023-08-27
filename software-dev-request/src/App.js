@@ -15,7 +15,7 @@ const App = () => {
   const [selectedServices, setSelectedServices] = useState([]);
   const [gitUrl, setGitUrl] = useState('');
   const [description, setDescription] = useState('');
-  const [connectedAccount, setConnectedAccount] = useState(null); // State for connected account
+  const [setConnectedAccount] = useState(); // State for connected account
 
   const toggleService = (serviceName) => {
     setSelectedServices((prevServices) =>
@@ -61,18 +61,13 @@ const App = () => {
             <h2>Total Cost:</h2>
             <p className="cost">${totalCost}</p>
           </div>
-          <MetaMaskConnect setConnectedAccount={setConnectedAccount} /> 
+          <MetaMaskConnect setConnectedAccount={setConnectedAccount} />
           <PurchaseComponent
             selectedServices={selectedServices}
             gitUrl={gitUrl}
             description={description}
             onSuccess={handlePurchaseSuccess}
           />
-          {connectedAccount && (
-            <p className="connected-account">
-              Connected Account: {connectedAccount}
-            </p>
-          )}
         </form>
       </div>
     </div>
