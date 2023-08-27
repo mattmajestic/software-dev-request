@@ -11,14 +11,14 @@ const PurchaseComponent = ({ selectedServices, gitUrl, description, totalCost, o
       const uniqueId = uuidv4(); // Generate a unique UUID
       const { data, error } = await supabase.from('purchases').upsert([
         {
-          id: uniqueId, // Use the unique UUID as the primary key
+          purchase_id: uniqueId, // Use the unique UUID as the primary key
           selectedServices,
           gitUrl,
           description,
           timestamp: new Date().toISOString(),
         },
-      ], { onConflict: ['id'] }); // Specify the primary key for conflict resolution
-
+      ], { onConflict: ['purchase_id'] }); // Specify the primary key for conflict resolution
+  
       if (error) {
         console.error('Error saving purchase:', error);
       } else {
