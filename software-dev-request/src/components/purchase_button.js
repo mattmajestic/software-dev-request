@@ -10,20 +10,21 @@ const PurchaseComponent = ({ selectedServices, totalCost, gitUrl, description, o
 
   const handlePurchase = async () => {
     try {
-      const dataToInsert = selectedServices.map((service) => ({
-        selectedServices: service,
-        gitUrl,
-        description,
-        timestamp: new Date().toISOString(),
-      }));
-  
-      const { data, error } = await supabase.from('purchases').insert(dataToInsert);
-  
+      const { data, error } = await supabase.from('purchases').insert([
+        {
+          selectedServices,
+          gitUrl,
+          description,
+          timestamp: new Date().toISOString(),
+        },
+      ]);
+
       if (error) {
         console.error('Error saving purchase:', error);
       } else {
         console.log('Purchase saved successfully:', data);
         setShowPopup(true); // Show the modal
+        onSuccess(); // Call the success handler
       }
     } catch (error) {
       console.error('Error saving purchase:', error);
