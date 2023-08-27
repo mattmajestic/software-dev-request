@@ -1,28 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const GitHubInput = ({ onUrlSubmit }) => {
-  const [repoUrl, setRepoUrl] = useState('');
-
-  const handleUrlChange = (e) => {
-    setRepoUrl(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onUrlSubmit(repoUrl);
-  };
-
+const GitHubInput = ({ setGitUrl, setDescription }) => {
   return (
-    <div>
-      <h2>Enter GitHub Repository URL:</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={repoUrl}
-          onChange={handleUrlChange}
-          placeholder="mattmajestic/software-dev-request"
-        />
-      </form>
+    <div className="input-container">
+      <label className="input-label">GitHub URL:</label>
+      <input
+        type="text"
+        className="git-input" // Apply styles to this class
+        placeholder="Enter GitHub URL"
+        onChange={(e) => setGitUrl(e.target.value)}
+      />
+      <label className="input-label">Description:</label>
+      <textarea
+        className="description-input" // Apply styles to this class
+        placeholder="Enter description"
+        onChange={(e) => setDescription(e.target.value)}
+      />
     </div>
   );
 };

@@ -13,9 +13,8 @@ const App = () => {
   ];
 
   const [selectedServices, setSelectedServices] = useState([]);
-  const [gitUrl, setGitUrl] = useState('');
-  const [description, setDescription] = useState('');
-  const [isPurchaseSuccess, setPurchaseSuccess] = useState(false);
+  const [gitUrl, setGitUrl] = useState(''); // Add state for gitUrl
+  const [description, setDescription] = useState(''); // Add state for description
 
   const toggleService = (serviceName) => {
     setSelectedServices((prevServices) =>
@@ -26,7 +25,7 @@ const App = () => {
   };
 
   const handlePurchaseSuccess = () => {
-    setPurchaseSuccess(true);
+    // Handle purchase success if needed
   };
 
   const totalCost = selectedServices.reduce((total, serviceName) => {
@@ -56,26 +55,17 @@ const App = () => {
             ))}
           </div>
           <GitHubInput setGitUrl={setGitUrl} setDescription={setDescription} />
-          <div className="description-container">
-            <label className="description-label">Description:</label>
-            <textarea
-              className="description-input"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
+          {/* Description input */}
           <div className="total-cost">
             <h2>Total Cost:</h2>
             <p className="cost">${totalCost}</p>
           </div>
           <PurchaseComponent
-          selectedServices={selectedServices}
-          gitUrl={gitUrl}
-          description={description}
-          onSuccess={handlePurchaseSuccess}
+            selectedServices={selectedServices}
+            gitUrl={gitUrl}
+            description={description}
+            onSuccess={handlePurchaseSuccess}
           />
-          <p className={isPurchaseSuccess ? "success-message" : "hidden"}>
-          </p>
           <MetaMaskConnect />
         </form>
       </div>
