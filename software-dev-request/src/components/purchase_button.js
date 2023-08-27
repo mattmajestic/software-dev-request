@@ -7,14 +7,25 @@ const supabase = createClient('https://rjmgkgtoruefbqqohelw.supabase.co', proces
 
 const PurchaseComponent = ({ selectedServices, gitUrl, description, onSuccess }) => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [purchaseId, setPurchaseId] = useState(null); // Declare purchaseId state
+  const [purchaseId, setPurchaseId] = useState(null);
+
+  const servicesData = [
+    { name: 'Code Review', price: 100 },
+    { name: 'Coding', price: 300 },
+    { name: 'Pull Request', price: 500 },
+  ];
+
+  const totalCost = selectedServices.reduce((total, serviceName) => {
+    const service = servicesData.find((s) => s.name === serviceName);
+    return total + (service ? service.price : 0);
+  }, 0);
 
   const handlePurchase = async () => {
     try {
-      const uniqueId = uuidv4(); // Generate a unique UUID
+      const uniqueId = uuidv4();
       const { data, error } = await supabase.from('purchases').insert([
         {
-          purchase_id: uniqueId, // Use the unique UUID as the primary key
+          purchase_id: uniqueId,
           selectedServices,
           gitUrl,
           description,
@@ -26,9 +37,9 @@ const PurchaseComponent = ({ selectedServices, gitUrl, description, onSuccess })
         console.error('Error saving purchase:', error);
       } else {
         console.log('Purchase saved successfully:', data);
-        setPurchaseId(uniqueId); // Store the generated purchase_id
-        setShowSuccessMessage(true); // Show the success message
-        onSuccess(); // Call the success handler
+        setPurchaseId(uniqueId);
+        setShowSuccessMessage(true);
+        onSuccess();
       }
     } catch (error) {
       console.error('Error saving purchase:', error);
@@ -43,6 +54,8 @@ const PurchaseComponent = ({ selectedServices, gitUrl, description, onSuccess })
       {showSuccessMessage && (
         <p className="success-message">
           Your purchase has been stored in Supabase with purchase ID: {purchaseId}
+          <br />
+          Total Cost: ${totalCost}
         </p>
       )}
     </div>
