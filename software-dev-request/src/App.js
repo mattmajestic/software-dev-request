@@ -45,7 +45,7 @@ const App = () => {
     const purchaseId = uuidv4();
 
     try {
-      const { data, error } = await supabase.from('purchases').insert([
+      const { error } = await supabase.from('purchases').insert([
         {
           purchase_id: purchaseId,
           selectedServices,
@@ -58,18 +58,12 @@ const App = () => {
       if (error) {
         console.error('Error saving purchase:', error);
       } else {
-        console.log('Purchase saved successfully:', data);
         setPurchaseSuccess(true); // Set purchase success state to true
       }
     } catch (error) {
       console.error('Error saving purchase:', error);
     }
   };
-
-  const totalCost = selectedServices.reduce((total, serviceName) => {
-    const service = servicesData.find((s) => s.name === serviceName);
-    return total + (service ? service.price : 0);
-  }, 0);
 
   return (
     <div className="App">
@@ -95,7 +89,10 @@ const App = () => {
           <GitHubInput setGitUrl={setGitUrl} setDescription={setDescription} />
           <div className="total-cost">
             <h2>Total Cost:</h2>
-            <p className="cost">${totalCost}</p>
+            <p className="cost">${selectedServices.reduce((total, serviceName) => {
+              const service = servicesData.find((s) => s.name === serviceName);
+              return total + (service ? service.price : 0);
+            }, 0)}</p>
           </div>
           <button className="metamask-button" onClick={connectToMetaMask}>
             Connect to MetaMask
