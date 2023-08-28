@@ -48,9 +48,9 @@ const App = () => {
       const { error } = await supabase.from('purchases').insert([
         {
           purchase_id: purchaseId,
-          selectedServices,
-          gitUrl,
-          description,
+          selectedServices: selectedServices,
+          gitUrl: gitUrl,
+          description: description,
           timestamp: new Date().toISOString(),
         },
       ]);
