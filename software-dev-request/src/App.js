@@ -18,6 +18,7 @@ const App = () => {
   const [gitUrl, setGitUrl] = useState('');
   const [description, setDescription] = useState('');
   const [isPurchaseSuccess, setPurchaseSuccess] = useState(false);
+  const [connectedAccount, setConnectedAccount] = useState(null);
 
   const toggleService = (serviceName) => {
     setSelectedServices((prevServices) =>
@@ -27,6 +28,19 @@ const App = () => {
     );
   };
 
+  const connectToMetaMask = async () => {
+    if (window.ethereum) {
+      try {
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        setConnectedAccount(accounts[0]); // Set the connected account
+      } catch (error) {
+        console.error('Error connecting to MetaMask:', error);
+      }
+    } else {
+      console.error('MetaMask not found');
+    }
+  };
+
   const handlePurchase = async () => {
     const purchaseId = uuidv4();
 
@@ -34,9 +48,9 @@ const App = () => {
       const { data, error } = await supabase.from('purchases').insert([
         {
           purchase_id: purchaseId,
-          selectedServices,
-          gitUrl,
-          description,
+          selectedServices: selectedServices,
+          gitURL: gitUrl,
+          description: description,
           timestamp: new Date().toISOString(),
         },
       ]);
@@ -83,6 +97,14 @@ const App = () => {
             <h2>Total Cost:</h2>
             <p className="cost">${totalCost}</p>
           </div>
+          <button className="metamask-button" onClick={connectToMetaMask}>
+            Connect to MetaMask
+          </button>
+          {connectedAccount ? (
+            <p>Connected Account: {connectedAccount}</p>
+          ) : (
+            <p>MetaMask not connected</p>
+          )}
           <button className="purchase-button" onClick={handlePurchase}>
             <span className="purchase-icon" />
             Purchase
