@@ -15,7 +15,6 @@ const App = () => {
   const [selectedServices, setSelectedServices] = useState([]);
   const [gitUrl, setGitUrl] = useState('');
   const [description, setDescription] = useState('');
-  const [isPurchaseSuccess, setPurchaseSuccess] = useState(false);
 
   const toggleService = (serviceName) => {
     setSelectedServices((prevServices) =>
@@ -23,10 +22,6 @@ const App = () => {
         ? prevServices.filter((service) => service !== serviceName)
         : [...prevServices, serviceName]
     );
-  };
-
-  const handlePurchaseSuccess = () => {
-    setPurchaseSuccess(true);
   };
 
   const totalCost = selectedServices.reduce((total, serviceName) => {
@@ -39,13 +34,7 @@ const App = () => {
       <Snowfall
         snowflakeCount={100}
         snowflakeSize={[5, 10]}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-        }}
+        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
       />
       <div className="form-container">
         <h1 className="app-title">Software Dev Request</h1>
@@ -66,6 +55,14 @@ const App = () => {
             ))}
           </div>
           <GitHubInput setGitUrl={setGitUrl} setDescription={setDescription} />
+          <div className="description-container">
+            <h2>Description:</h2>
+            <textarea
+              className="description-input"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
           <div className="total-cost">
             <h2>Total Cost:</h2>
             <p className="cost">${totalCost}</p>
@@ -75,13 +72,7 @@ const App = () => {
             selectedServices={selectedServices}
             gitUrl={gitUrl}
             description={description}
-            onSuccess={handlePurchaseSuccess}
           />
-          {isPurchaseSuccess && (
-            <p className="success-message">
-              Your purchase has been completed successfully!
-            </p>
-          )}
         </form>
       </div>
     </div>

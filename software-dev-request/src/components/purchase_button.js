@@ -1,23 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { v4 as uuidv4 } from 'uuid';
 import '../App.css';
 
 const supabase = createClient('https://rjmgkgtoruefbqqohelw.supabase.co', process.env.REACT_APP_SUPABASE);
 
-const PurchaseComponent = ({ selectedServices, gitUrl, description, onSuccess }) => {
-  const [isPurchaseButtonClicked, setIsPurchaseButtonClicked] = useState(false);
-  const [purchaseId, setPurchaseId] = useState('');
-
+const PurchaseComponent = ({ selectedServices, gitUrl, description }) => {
   const handlePurchase = async () => {
+    const purchaseId = uuidv4();
+
     try {
-      const newPurchaseId = uuidv4();
       const { data, error } = await supabase.from('purchases').insert([
         {
-          purchase_id: newPurchaseId,
-          selectedServices,
-          gitUrl,
-          description,
+          purchase_id: purchaseId,
+          selected_services: selectedServices,
+          git_url: gitUrl,
+          description: description,
           timestamp: new Date().toISOString(),
         },
       ]);
@@ -26,9 +24,6 @@ const PurchaseComponent = ({ selectedServices, gitUrl, description, onSuccess })
         console.error('Error saving purchase:', error);
       } else {
         console.log('Purchase saved successfully:', data);
-        setIsPurchaseButtonClicked(true);
-        setPurchaseId(newPurchaseId);
-        onSuccess();
       }
     } catch (error) {
       console.error('Error saving purchase:', error);
@@ -37,16 +32,15 @@ const PurchaseComponent = ({ selectedServices, gitUrl, description, onSuccess })
 
   return (
     <div>
-      <button className="purchase-button" onClick={handlePurchase} disabled={isPurchaseButtonClicked}>
+      <button className="purchase-button" onClick={handlePurchase}>
         <span className="purchase-icon" />
         Purchase
       </button>
 
-      {isPurchaseButtonClicked && (
-        <p className="success-message">
-          Your purchase with ID {purchaseId} has been completed.
-        </p>
-      )}
+      {/* Display the success message */}
+      <p className="success-message">
+        Your purchase has been completed.
+      </p>
     </div>
   );
 };
