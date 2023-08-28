@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import Snowfall from 'react-snowfall';
-import MetaMaskConnect from './components/metamask';
 import GitHubInput from './components/github_input';
-import PurchaseComponent from './components/purchase_button';
 import './App.css';
+import { createClient } from '@supabase/supabase-js';
+import { v4 as uuidv4 } from 'uuid';
+
+const supabase = createClient('https://rjmgkgtoruefbqqohelw.supabase.co', process.env.REACT_APP_SUPABASE);
 
 const App = () => {
   const servicesData = [
@@ -15,6 +17,7 @@ const App = () => {
   const [selectedServices, setSelectedServices] = useState([]);
   const [gitUrl, setGitUrl] = useState('');
   const [description, setDescription] = useState('');
+  const [isPurchaseSuccess, setPurchaseSuccess] = useState(false);
 
   const toggleService = (serviceName) => {
     setSelectedServices((prevServices) =>
@@ -24,6 +27,31 @@ const App = () => {
     );
   };
 
+  const handlePurchase = async () => {
+    const purchaseId = uuidv4();
+
+    try {
+      const { data, error } = await supabase.from('purchases').insert([
+        {
+          purchase_id: purchaseId,
+          selectedServices,
+          gitUrl,
+          description,
+          timestamp: new Date().toISOString(),
+        },
+      ]);
+
+      if (error) {
+        console.error('Error saving purchase:', error);
+      } else {
+        console.log('Purchase saved successfully:', data);
+        setPurchaseSuccess(true); // Set purchase success state to true
+      }
+    } catch (error) {
+      console.error('Error saving purchase:', error);
+    }
+  };
+
   const totalCost = selectedServices.reduce((total, serviceName) => {
     const service = servicesData.find((s) => s.name === serviceName);
     return total + (service ? service.price : 0);
@@ -31,11 +59,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <Snowfall
-        snowflakeCount={100}
-        snowflakeSize={[5, 10]}
-        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-      />
+      <Snowfall snowflakeCount={100} snowflakeSize={[5, 10]} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
       <div className="form-container">
         <h1 className="app-title">Software Dev Request</h1>
         <form>
@@ -55,24 +79,19 @@ const App = () => {
             ))}
           </div>
           <GitHubInput setGitUrl={setGitUrl} setDescription={setDescription} />
-          <div className="description-container">
-            <h2>Description:</h2>
-            <textarea
-              className="description-input"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
           <div className="total-cost">
             <h2>Total Cost:</h2>
             <p className="cost">${totalCost}</p>
           </div>
-          <MetaMaskConnect />
-          <PurchaseComponent
-            selectedServices={selectedServices}
-            gitUrl={gitUrl}
-            description={description}
-          />
+          <button className="purchase-button" onClick={handlePurchase}>
+            <span className="purchase-icon" />
+            Purchase
+          </button>
+          {isPurchaseSuccess && (
+            <p className="success-message">
+              Your purchase has been completed.
+            </p>
+          )}
         </form>
       </div>
     </div>
