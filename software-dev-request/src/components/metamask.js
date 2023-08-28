@@ -3,37 +3,31 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEthereum } from '@fortawesome/free-brands-svg-icons';
 import '../App.css';
 
-const MetaMaskConnect = ({ setConnectedAccount }) => {
-  const [account, setAccount] = useState(null);
-  const [error, setError] = useState(null);
+const MetaMaskConnect = () => {
+  const [metaMaskAddress, setMetaMaskAddress] = useState(null);
 
   const connectToMetaMask = async () => {
     if (window.ethereum) {
       try {
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        const connectedAccount = accounts[0]; // Get the connected account
-        setAccount(connectedAccount);
-        setConnectedAccount(connectedAccount); // Pass the connected account to the parent component
+        setMetaMaskAddress(accounts[0]);
       } catch (error) {
-        setError('Error connecting to MetaMask');
+        console.log('Error connecting to MetaMask:', error);
       }
     } else {
-      setError('MetaMask not found');
+      console.log('MetaMask extension not detected');
     }
   };
 
   return (
     <div>
-      {account ? (
-        <p>Connected Account: {account}</p>
+      {metaMaskAddress ? (
+        <p>Connected Account: {metaMaskAddress}</p>
       ) : (
-        <div>
-          <button className="connect-button" onClick={connectToMetaMask}>
-            <FontAwesomeIcon icon={faEthereum} className="github-icon" />
-            Connect to MetaMask
-          </button>
-          {error && <p>{error}</p>}
-        </div>
+        <button className="connect-button" onClick={connectToMetaMask}>
+          <FontAwesomeIcon icon={faEthereum} className="github-icon" />
+          Connect to MetaMask
+        </button>
       )}
     </div>
   );

@@ -6,14 +6,33 @@ import PurchaseComponent from './components/purchase_button';
 import './App.css';
 
 const App = () => {
+  const servicesData = [
+    { name: 'Code Review', price: 100 },
+    { name: 'Coding', price: 300 },
+    { name: 'Pull Request', price: 500 },
+  ];
+
   const [selectedServices, setSelectedServices] = useState([]);
   const [gitUrl, setGitUrl] = useState('');
   const [description, setDescription] = useState('');
   const [isPurchaseSuccess, setPurchaseSuccess] = useState(false);
 
+  const toggleService = (serviceName) => {
+    setSelectedServices((prevServices) =>
+      prevServices.includes(serviceName)
+        ? prevServices.filter((service) => service !== serviceName)
+        : [...prevServices, serviceName]
+    );
+  };
+
   const handlePurchaseSuccess = () => {
     setPurchaseSuccess(true);
   };
+
+  const totalCost = selectedServices.reduce((total, serviceName) => {
+    const service = servicesData.find((s) => s.name === serviceName);
+    return total + (service ? service.price : 0);
+  }, 0);
 
   return (
     <div className="App">
@@ -33,24 +52,24 @@ const App = () => {
         <form>
           <div className="services-container">
             <h2>Select Services:</h2>
-            <label>
-              <input
-                type="checkbox"
-                value="Code Review"
-                checked={selectedServices.includes('Code Review')}
-                onChange={() =>
-                  setSelectedServices((prevServices) =>
-                    prevServices.includes('Code Review')
-                      ? prevServices.filter((service) => service !== 'Code Review')
-                      : [...prevServices, 'Code Review']
-                  )
-                }
-              />
-              Code Review - $100
-            </label>
-            {/* Repeat similar code for other services */}
+            {servicesData.map((service) => (
+              <label key={service.name} className="service-label">
+                <input
+                  type="checkbox"
+                  className="service-input"
+                  value={service.name}
+                  checked={selectedServices.includes(service.name)}
+                  onChange={() => toggleService(service.name)}
+                />
+                {service.name} - ${service.price}
+              </label>
+            ))}
           </div>
           <GitHubInput setGitUrl={setGitUrl} setDescription={setDescription} />
+          <div className="total-cost">
+            <h2>Total Cost:</h2>
+            <p className="cost">${totalCost}</p>
+          </div>
           <MetaMaskConnect />
           <PurchaseComponent
             selectedServices={selectedServices}
