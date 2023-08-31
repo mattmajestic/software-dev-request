@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Snowfall from 'react-snowfall';
+import GitHubAuth from './components/github_auth';
 import GitHubInput from './components/github_input';
 import './App.css';
 import { createClient } from '@supabase/supabase-js';
@@ -86,6 +87,7 @@ const App = () => {
               </label>
             ))}
           </div>
+          <GitHubAuth />
           <GitHubInput setGitUrl={setGitUrl} setDescription={setDescription} />
           <div className="total-cost">
             <h2>Total Cost:</h2>
