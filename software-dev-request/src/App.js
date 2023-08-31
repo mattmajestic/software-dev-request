@@ -87,8 +87,10 @@ const App = () => {
               </label>
             ))}
           </div>
+          <div>
           <GitHubAuth />
           <GitHubInput setGitUrl={setGitUrl} setDescription={setDescription} />
+          </div>
           <div className="total-cost">
             <h2>Total Cost:</h2>
             <p className="cost">${selectedServices.reduce((total, serviceName) => {
