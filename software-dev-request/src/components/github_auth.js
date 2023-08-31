@@ -1,31 +1,52 @@
 import React, { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
-import { Auth } from '@supabase/auth-ui-react';
-import { ThemeSupa } from '@supabase/auth-ui-shared';
 
 const supabase = createClient('https://rjmgkgtoruefbqqohelw.supabase.co', process.env.REACT_APP_SUPABASE);
-
 
 export default function GitHubAuth() {
   const [session, setSession] = useState(null);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
-    return () => subscription.unsubscribe();
+    const session = supabase.auth.session();
+    setSession(session?.user);
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        switch (event) {
+          case "SIGNED_IN":
+            setSession(session?.user);
+            break;
+          case "SIGNED_OUT":
+            setSession(null);
+            break;
+          default:
+        }
+      }
+    );
+    return () => {
+      authListener.unsubscribe();
+    };
   }, []);
 
-  if (!session) {
-    return <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} />;
-  } else {
-    return <div>Logged in!</div>;
-  }
+  const login = async () => {
+    await supabase.auth.signIn({
+      provider: "github",
+    });
+  };
+
+  const logout = async () => {
+    await supabase.auth.signOut();
+  };
+
+  return (
+    <div>
+      {session ? (
+        <div>
+          <h1>Authenticated</h1>
+          <button onClick={logout}>Logout</button>
+        </div>
+      ) : (
+        <button onClick={login}>Login with Github</button>
+      )}
+    </div>
+  );
 }
