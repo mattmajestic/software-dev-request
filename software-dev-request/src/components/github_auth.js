@@ -5,17 +5,22 @@ import { ThemeSupa } from '@supabase/auth-ui-shared';
 
 const supabase = createClient('https://rjmgkgtoruefbqqohelw.supabase.co', process.env.REACT_APP_SUPABASE);
 
+
 export default function GitHubAuth() {
   const [session, setSession] = useState(null);
 
   useEffect(() => {
-    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
     });
 
-    return () => {
-      authListener.unsubscribe();
-    };
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   if (!session) {
